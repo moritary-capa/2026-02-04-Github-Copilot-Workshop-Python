@@ -61,9 +61,19 @@ function notifyTimerEnd() {
             }
         });
     }
-    // アラート音
-    const beep = new Audio('https://freesound.org/data/previews/522/522741_11525840-lq.mp3');
-    beep.play();
+    // アラート音（ローカルファイルを使用）
+    const beep = new Audio('beep.mp3');
+    // 読み込みエラーのハンドリング
+    beep.addEventListener('error', (event) => {
+        console.error('アラート音の読み込みに失敗しました:', event);
+    });
+    // 再生時エラーのハンドリング（対応ブラウザでは Promise を利用）
+    const playResult = beep.play();
+    if (playResult && typeof playResult.catch === 'function') {
+        playResult.catch((error) => {
+            console.error('アラート音の再生に失敗しました:', error);
+        });
+    }
 }
 }
 
