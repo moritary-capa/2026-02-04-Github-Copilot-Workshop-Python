@@ -84,6 +84,13 @@ function resetTimer() {
 
 function switchMode(mode) {
     if (!MODES[mode]) return;
+    // タイマー実行中にモードを切り替える場合はユーザーに確認する
+    if (isRunning) {
+        const confirmed = window.confirm('タイマーが実行中です。モードを切り替えると現在のタイマーがリセットされます。続行しますか？');
+        if (!confirmed) {
+            return;
+        }
+    }
     currentMode = mode;
     resetTimer();
 }
